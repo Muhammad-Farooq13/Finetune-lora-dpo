@@ -1,9 +1,10 @@
-# Fine-Tuning with LoRA & DPO — Function Calling / JSON Extraction
+# Fine-Tuning Qwen2.5 for Function Calling with LoRA + DPO
 
 [![Python 3.11+](https://img.shields.io/badge/python-3.11+-blue.svg)](https://www.python.org/downloads/)
 [![HuggingFace](https://img.shields.io/badge/🤗-Transformers-yellow)](https://huggingface.co/docs/transformers)
 [![PEFT](https://img.shields.io/badge/PEFT-LoRA%2FQLoRA-green)](https://github.com/huggingface/peft)
 [![TRL](https://img.shields.io/badge/TRL-DPO-orange)](https://github.com/huggingface/trl)
+[![CI](https://github.com/Muhammad-Farooq13/project4-finetune-lora-dpo/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq13/project4-finetune-lora-dpo/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
 [![GitHub](https://img.shields.io/badge/GitHub-Muhammad--Farooq13-181717?logo=github)](https://github.com/Muhammad-Farooq13)
 
@@ -30,6 +31,8 @@ SFT with LoRA fixes the structural problem. DPO then improves preference — tea
 
 ## Results (Qwen2.5-1.5B-Instruct · glaive-function-calling-v2 · 1 000 test samples)
 
+> **Note:** These numbers are from a single run on 91k training examples. Results will vary with different random seeds or dataset subsets — I've seen tool-match fluctuate ±2–3 pp between runs. The trends (SFT >> base, DPO adds on top) are consistent though.
+
 | Metric | Base Model | + SFT (LoRA) | + DPO | Δ Base→DPO |
 |--------|:----------:|:------------:|:-----:|:----------:|
 | Valid JSON output (%) | 23.4 | 91.2 | **93.7** | +70.3 pp |
@@ -55,9 +58,11 @@ The DPO rejection strategy matters more than I expected. "Wrong function name" r
 
 I used `glaiveai/glaive-function-calling-v2` (112k examples, single and multi-turn, real function schemas) as the training set. It's better than synthetic data because the function schemas and conversations are diverse — the model sees ~3k unique function names, not just "get_weather" repeated.
 
+One thing that tripped me up early: I initially forgot to set `padding_side="right"` on the tokenizer for SFT, which caused the model to attend to padding tokens on the left and produced garbage outputs for the first few hundred steps. If your SFT loss doesn't start dropping within the first 50 steps, check your padding configuration first.
+
 ---
 
-## Architecture
+## How It Works
 
 ```
 Dataset (glaiveai/glaive-function-calling-v2)
