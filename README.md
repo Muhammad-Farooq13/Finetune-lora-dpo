@@ -4,9 +4,9 @@
 [![HuggingFace](https://img.shields.io/badge/🤗-Transformers-yellow)](https://huggingface.co/docs/transformers)
 [![PEFT](https://img.shields.io/badge/PEFT-LoRA%2FQLoRA-green)](https://github.com/huggingface/peft)
 [![TRL](https://img.shields.io/badge/TRL-DPO-orange)](https://github.com/huggingface/trl)
-[![CI](https://github.com/Muhammad-Farooq13/project4-finetune-lora-dpo/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq13/project4-finetune-lora-dpo/actions)
+[![CI](https://github.com/Muhammad-Farooq-13/project4-finetune-lora-dpo/actions/workflows/ci.yml/badge.svg)](https://github.com/Muhammad-Farooq-13/project4-finetune-lora-dpo/actions)
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](LICENSE)
-[![GitHub](https://img.shields.io/badge/GitHub-Muhammad--Farooq13-181717?logo=github)](https://github.com/Muhammad-Farooq13)
+[![GitHub](https://img.shields.io/badge/GitHub-Muhammad--Farooq--13-181717?logo=github)](https://github.com/Muhammad-Farooq-13)
 
 > I got tired of base models hallucinating function names and mangling JSON arguments when used as tool-calling agents. This repo shows how much a targeted LoRA fine-tune + DPO preference step actually moves the needle — with concrete before/after numbers.
 
@@ -129,7 +129,7 @@ Evaluation
 ### Install
 
 ```bash
-git clone https://github.com/Muhammad-Farooq13/project4-finetune-lora-dpo.git
+git clone https://github.com/Muhammad-Farooq-13/project4-finetune-lora-dpo.git
 cd project4-finetune-lora-dpo
 
 python -m venv .venv
@@ -320,4 +320,4 @@ MIT © 2026 Muhammad Farooq — see [LICENSE](LICENSE)
 
 ---
 
-Built by [Muhammad Farooq](https://github.com/Muhammad-Farooq13) · [mfarooqshafee333@gmail.com](mailto:mfarooqshafee333@gmail.com)
+Built by [Muhammad Farooq](https://github.com/Muhammad-Farooq-13) · [mfarooqshafee333@gmail.com](mailto:mfarooqshafee333@gmail.com)
