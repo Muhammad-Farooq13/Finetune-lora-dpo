@@ -1,0 +1,50 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "finetune-lora-dpo"
+version = "1.0.0"
+description = "Fine-tuning LLMs for function calling with LoRA/QLoRA and DPO preference optimisation"
+readme = "README.md"
+requires-python = ">=3.11"
+license = { text = "MIT" }
+authors = [{ name = "Muhammad Farooq", email = "mfarooqshafee333@gmail.com" }]
+keywords = ["llm", "fine-tuning", "lora", "qlora", "dpo", "function-calling", "peft"]
+classifiers = [
+    "Development Status :: 4 - Beta",
+    "Intended Audience :: Developers",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*"]
+
+# ─── pytest ───────────────────────────────────────────────────────────────────
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "--tb=short -q"
+
+# ─── black ────────────────────────────────────────────────────────────────────
+[tool.black]
+line-length = 100
+target-version = ["py311", "py312"]
+
+# ─── ruff ─────────────────────────────────────────────────────────────────────
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "W", "I", "UP", "B"]
+ignore = ["B008"]
+
+# ─── mypy ─────────────────────────────────────────────────────────────────────
+[tool.mypy]
+python_version = "3.11"
+ignore_missing_imports = true
+warn_unused_ignores = true

@@ -1,0 +1,35 @@
+# Core ML / Fine-tuning
+torch>=2.1.0
+transformers>=4.40.0
+peft>=0.10.0
+trl>=0.8.6
+bitsandbytes>=0.43.0
+accelerate>=0.28.0
+
+# Dataset handling
+datasets>=2.18.0
+huggingface-hub>=0.22.0
+
+# Evaluation
+evaluate>=0.4.1
+rouge-score>=0.1.2
+
+# Tokenisation utilities
+sentencepiece>=0.2.0
+protobuf>=4.25.0
+
+# Numerics
+numpy>=1.26.0
+scipy>=1.12.0
+
+# Experiment tracking (optional — set WANDB_API_KEY to enable)
+wandb>=0.16.0
+
+# Serialisation / safety
+safetensors>=0.4.2
+
+# Logging
+structlog>=24.1.0
+
+# Flash Attention 2 — Linux + CUDA only, comment out if not applicable
+# flash-attn>=2.5.0

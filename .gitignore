@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.so
+*.egg
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual environments
+.venv/
+venv/
+env/
+
+# Environment / secrets
+.env
+*.key
+
+# Model checkpoints (large, don't commit)
+checkpoints/
+*.bin
+*.safetensors
+*.pt
+*.pth
+
+# HuggingFace cache
+.cache/
+~/.cache/huggingface/
+
+# Datasets (large)
+data/processed/
+data/raw/
+*.arrow
+*.parquet
+
+# WandB
+wandb/
+*.wandb
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Coverage
+.coverage
+htmlcov/
+.pytest_cache/
+
+# MyPy
+.mypy_cache/

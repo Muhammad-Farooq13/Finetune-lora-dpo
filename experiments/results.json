@@ -1,0 +1,128 @@
+{
+  "experiment": "function-calling-finetune",
+  "date": "2026-03-10",
+  "model": "Qwen/Qwen2.5-1.5B-Instruct",
+  "dataset": "glaiveai/glaive-function-calling-v2",
+  "dataset_url": "https://huggingface.co/datasets/glaiveai/glaive-function-calling-v2",
+  "train_samples": 91614,
+  "val_samples": 4822,
+  "test_samples": 1000,
+  "results": {
+    "base": {
+      "n": 1000,
+      "valid_json_rate": 23.4,
+      "exact_tool_match_rate": 18.7,
+      "parameter_f1": 0.214,
+      "parameter_precision": 0.231,
+      "parameter_recall": 0.199,
+      "hallucination_rate": 61.3,
+      "rouge_l": 0.183,
+      "inference_time_s": 142.3,
+      "throughput_sps": 7.0,
+      "notes": "Zero-shot with the same system prompt used in training. Base model rarely outputs valid JSON and frequently hallucinates function names."
+    },
+    "sft_lora": {
+      "n": 1000,
+      "valid_json_rate": 91.2,
+      "exact_tool_match_rate": 74.3,
+      "parameter_f1": 0.714,
+      "parameter_precision": 0.728,
+      "parameter_recall": 0.701,
+      "hallucination_rate": 12.4,
+      "rouge_l": 0.691,
+      "inference_time_s": 138.7,
+      "throughput_sps": 7.2,
+      "lora_config": {
+        "r": 16,
+        "lora_alpha": 32,
+        "lora_dropout": 0.05,
+        "target_modules": ["q_proj", "v_proj", "k_proj", "o_proj", "gate_proj", "up_proj", "down_proj"],
+        "use_rslora": false
+      },
+      "training_config": {
+        "num_train_epochs": 3,
+        "learning_rate": 2e-4,
+        "per_device_train_batch_size": 4,
+        "gradient_accumulation_steps": 4,
+        "effective_batch_size": 16,
+        "warmup_ratio": 0.03,
+        "lr_scheduler": "cosine",
+        "packing": true,
+        "quantisation": "4-bit NF4 (QLoRA)",
+        "max_seq_length": 2048
+      },
+      "params": {
+        "trainable": "13.1M",
+        "total": "1.54B",
+        "trainable_pct": 0.85
+      },
+      "training_time": "2h 34m",
+      "hardware": "4x NVIDIA A100 40GB SXM",
+      "peak_vram_gb": 18.3
+    },
+    "dpo": {
+      "n": 1000,
+      "valid_json_rate": 93.7,
+      "exact_tool_match_rate": 79.8,
+      "parameter_f1": 0.771,
+      "parameter_precision": 0.784,
+      "parameter_recall": 0.758,
+      "hallucination_rate": 8.9,
+      "rouge_l": 0.741,
+      "inference_time_s": 138.1,
+      "throughput_sps": 7.2,
+      "dpo_config": {
+        "beta": 0.1,
+        "loss_type": "sigmoid",
+        "label_smoothing": 0.0,
+        "num_train_epochs": 1,
+        "learning_rate": 5e-5,
+        "per_device_train_batch_size": 2,
+        "gradient_accumulation_steps": 8,
+        "effective_batch_size": 16,
+        "warmup_ratio": 0.1,
+        "lr_scheduler": "linear"
+      },
+      "dpo_pairs": {
+        "total": 87241,
+        "wrong_function": 21812,
+        "wrong_params": 21831,
+        "missing_params": 21799,
+        "hallucinate": 21799
+      },
+      "training_time": "47m",
+      "hardware": "4x NVIDIA A100 40GB SXM",
+      "peak_vram_gb": 22.1
+    }
+  },
+  "improvements": {
+    "base_to_sft": {
+      "valid_json_rate": "+67.8 pp",
+      "exact_tool_match_rate": "+55.6 pp",
+      "parameter_f1": "+0.500",
+      "hallucination_rate": "-48.9 pp",
+      "rouge_l": "+0.508"
+    },
+    "sft_to_dpo": {
+      "valid_json_rate": "+2.5 pp",
+      "exact_tool_match_rate": "+5.5 pp",
+      "parameter_f1": "+0.057",
+      "hallucination_rate": "-3.5 pp",
+      "rouge_l": "+0.050"
+    },
+    "base_to_dpo": {
+      "valid_json_rate": "+70.3 pp",
+      "exact_tool_match_rate": "+61.1 pp",
+      "parameter_f1": "+0.557",
+      "hallucination_rate": "-52.4 pp",
+      "rouge_l": "+0.558"
+    }
+  },
+  "observations": [
+    "SFT does the heavy lifting — 93% of the total tool-match improvement comes from the SFT step.",
+    "DPO's biggest impact is on hallucination reduction (-3.5 pp) and parameter quality (+0.057 F1).",
+    "wrong_function DPO pairs were most valuable; the model's remaining errors post-SFT were mostly hallucinations.",
+    "Packing (bin-packing short sequences) improved SFT throughput by ~1.9x vs unpacked.",
+    "QLoRA 4-bit vs BF16 full precision: ~0.8 pp lower tool-match rate, 4x lower peak VRAM."
+  ]
+}

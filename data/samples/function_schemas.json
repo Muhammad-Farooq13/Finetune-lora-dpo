@@ -1,0 +1,77 @@
+[
+  {
+    "name": "get_weather",
+    "description": "Get current weather for a location",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "description": "City name or 'lat,lon' coordinates"
+        },
+        "units": {
+          "type": "string",
+          "enum": ["celsius", "fahrenheit"],
+          "default": "celsius"
+        }
+      },
+      "required": ["location"]
+    }
+  },
+  {
+    "name": "search_products",
+    "description": "Search for products in the e-commerce catalog",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "query": {"type": "string", "description": "Search query"},
+        "category": {"type": "string", "description": "Product category filter"},
+        "max_price": {"type": "number", "description": "Maximum price in USD"},
+        "in_stock": {"type": "boolean", "default": true}
+      },
+      "required": ["query"]
+    }
+  },
+  {
+    "name": "create_calendar_event",
+    "description": "Create a new event in the user's calendar",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "title": {"type": "string"},
+        "date": {"type": "string", "format": "date", "description": "YYYY-MM-DD"},
+        "time": {"type": "string", "format": "time", "description": "HH:MM (24h)"},
+        "duration_minutes": {"type": "integer", "default": 60},
+        "description": {"type": "string"}
+      },
+      "required": ["title", "date"]
+    }
+  },
+  {
+    "name": "send_message",
+    "description": "Send a message to a contact",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "to": {"type": "string", "description": "Recipient name or email"},
+        "subject": {"type": "string"},
+        "body": {"type": "string"},
+        "priority": {"type": "string", "enum": ["normal", "high"], "default": "normal"}
+      },
+      "required": ["to", "body"]
+    }
+  },
+  {
+    "name": "convert_currency",
+    "description": "Convert an amount from one currency to another",
+    "parameters": {
+      "type": "object",
+      "properties": {
+        "amount": {"type": "number"},
+        "from_currency": {"type": "string", "description": "ISO 4217 code, e.g. USD"},
+        "to_currency": {"type": "string", "description": "ISO 4217 code, e.g. EUR"}
+      },
+      "required": ["amount", "from_currency", "to_currency"]
+    }
+  }
+]
