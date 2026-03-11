@@ -1,0 +1,22 @@
+# Lightweight requirements for CI — no GPU packages.
+#
+# The full requirements.txt includes torch, bitsandbytes, trl, peft, etc.
+# Those packages are multiple GB in size and require a CUDA-capable machine to
+# function correctly.  The unit tests (test_metrics, test_formatter,
+# test_preference_builder) only need the packages below; heavy imports are
+# guarded behind TYPE_CHECKING blocks or are mocked in tests.
+#
+# Usage in CI:  pip install -r requirements-ci.txt
+
+# Testing
+pytest>=8.0.0
+pytest-asyncio>=0.23.0
+pytest-cov>=5.0.0
+
+# Code quality
+black>=24.3.0
+ruff>=0.3.4
+mypy>=1.9.0
+
+# Lightweight runtime dependencies used by the tested modules
+numpy>=1.26.0
