@@ -31,5 +31,9 @@ safetensors>=0.4.2
 # Logging
 structlog>=24.1.0
 
+# Interactive demo
+streamlit>=1.36.0
+plotly>=5.18.0
+
 # Flash Attention 2 — Linux + CUDA only, comment out if not applicable
 # flash-attn>=2.5.0
