@@ -57,6 +57,26 @@ flowchart TD
 
 ---
 
+## Training & Explainability
+
+<div align="center">
+
+**Training Loss Curve**
+
+<img src="assets/loss_curve.png" alt="Loss curve" width="420"/>
+
+<sub>Loss curve for SFT and DPO training. DPO phase shows rapid improvement in tool match accuracy.</sub>
+
+**SHAP Summary Plot**
+
+<img src="assets/shap_summary.png" alt="SHAP summary" width="420"/>
+
+<sub>SHAP values for top features influencing function call prediction. Most important: tool_name, param_count, json_validity.</sub>
+
+</div>
+
+---
+
 ## Streamlit Demo
 
 ```bash
