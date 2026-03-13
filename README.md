@@ -24,6 +24,37 @@ The result: **93.7% valid JSON** and **79.8% exact tool match** up from a 23.4%
 Evaluated on 1,000 held-out samples from
 [glaiveai/glaive-function-calling-v2](https://huggingface.co/datasets/glaiveai/glaive-function-calling-v2).
 
+
+---
+
+## 🏗️ Architecture Diagram
+
+```mermaid
+flowchart TD
+    A([📦 glaiveai/glaive-function-calling-v2\n112k examples]) --> B[DataLoader + ChatML Formatter\nSystem prompt · function schemas · calls]
+
+    B --> C[🔢 Tokenizer\nQwen2.5-1.5B-Instruct]
+    C --> D[⚙️ BitsAndBytes 4-bit NF4\ndouble quant · compute_dtype bfloat16]
+    D --> E[🧩 LoRA Adapter Injection\nr=16 · alpha=32 · dropout=0.05\ntarget: q_proj k_proj v_proj o_proj\n~1.3% trainable parameters]
+
+    E --> F[🏋️ SFT Training\nTRL SFTTrainer · 3 epochs\ncosine LR · gradient checkpointing]
+    F --> G([📁 SFT Checkpoint\nValid JSON: 91.2% · Tool Match: 74.3%])
+
+    G --> H[🔄 PreferenceBuilder\n4 rejection strategies:\nwrong_tool · missing_param\nbad_json · hallucinated_param]
+    H --> I[📊 DPO Pair Dataset\nchosen: correct calls\nrejected: synthetic errors]
+
+    I --> J[🎯 DPO Training\nTRL DPOTrainer · beta=0.1\nreference model frozen]
+    J --> K([🏆 DPO Checkpoint\nValid JSON: 93.7% · Tool Match: 79.8%\nParam F1: 0.771 · Hallucination: 8.9%])
+
+    K --> L[📋 Evaluation\n1 000 held-out samples\nJSONSchema validation + exact match]
+    L --> M[📈 Streamlit Dashboard\nModel comparison · DPO pairs · live demo]
+
+    style A fill:#1a1a2e,color:#58A6FF
+    style G fill:#1a1a2e,color:#F0DB4F
+    style K fill:#6E40C9,color:#fff,stroke:#FF6B6B
+    style M fill:#58A6FF,color:#fff
+```
+
 ---
 
 ## Streamlit Demo
